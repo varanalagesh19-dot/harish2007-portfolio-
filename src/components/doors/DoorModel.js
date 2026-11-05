@@ -1,19 +1,15 @@
 import * as THREE from 'three'
 
 /**
- * DoorModel.js
- * Photorealistic Architectural Doors for HARISH 2007 — Atelier Imagination.
+ * DoorModel.js — HARISH 2007: Atelier Imagination
+ * Photorealistic Architectural 3D Doors with Celestial Heavenly Reveal.
  * 
- * Architectural Features:
- * - Exactly FIVE bespoke doors (ABOUT, ART GALLERY, PROJECTS, SKILLS, CONTACT)
- * - Deep classical European molded architraves with ogee profiles and projecting cornice
- * - 4 deeply beveled bolection panels with shadow reveals and beveled raised fields (zero cartoon dots)
- * - Multi-layer procedural wood grain and micro-bump PBR textures
- * - True left-hinged pivot with 3 mechanical forged brass butt-hinges & urn finials
- * - Solid brass lever handle, beveled escutcheon plate, spindle rosette, and teardrop keyhole
- * - Dedicated top architectural downlight sconce on every door (zero blown-out specular hotspots)
- * - Deep interior architectural portal corridor behind each doorway
- * - Precision raycast hit box ensuring 100% reliable click and hover detection
+ * Five Monumental Architectural Doors:
+ * 01 — ABOUT (/about)
+ * 02 — ART GALLERY (/gallery)
+ * 03 — PROJECTS (/projects) [CENTER DOOR — VIVID, PROMINENT & NEVER HIDDEN]
+ * 04 — SKILLS (/skills)
+ * 05 — CONTACT (/contact)
  */
 
 export const DOORS_CONFIG = [
@@ -28,7 +24,7 @@ export const DOORS_CONFIG = [
     frameColor: 0x1e261a, // Dark Forest Oak
     accentColor: 0xc5a059, // Warm Antique Gold
     sconceLightColor: 0xf5faee,
-    portalLightColor: 0xf9fff2,
+    portalLightColor: 0xfff6e6,
     icon: '👤',
   },
   {
@@ -42,7 +38,7 @@ export const DOORS_CONFIG = [
     frameColor: 0x2e150c, // Rich Smoked Mahogany
     accentColor: 0xd4af37, // Florentine Gold Leaf
     sconceLightColor: 0xffeed4,
-    portalLightColor: 0xffebcb,
+    portalLightColor: 0xffebd2,
     icon: '🎨',
   },
   {
@@ -89,21 +85,22 @@ export const DOORS_CONFIG = [
   },
 ]
 
-// Texture cache
-const textureCache = new Map()
+// Texture caches
+const woodTextureCache = new Map()
+let cloudTextureCache = null
 
 /**
- * Generates photorealistic wood grain color & micro-bump maps via HTML5 Canvas
+ * Generates photorealistic wood grain color & micro-bump PBR maps via Canvas
  */
 function getProceduralWoodPBR(hexColor) {
-  if (textureCache.has(hexColor)) {
-    return textureCache.get(hexColor)
+  if (woodTextureCache.has(hexColor)) {
+    return woodTextureCache.get(hexColor)
   }
 
   const width = 512
   const height = 1024
 
-  // 1. Wood Color Canvas
+  // 1. Color Map
   const canvas = document.createElement('canvas')
   canvas.width = width
   canvas.height = height
@@ -113,11 +110,10 @@ function getProceduralWoodPBR(hexColor) {
   const g = (hexColor >> 8) & 255
   const b = hexColor & 255
 
-  // Base background with subtle vertical wood stain gradient
   const grad = ctx.createLinearGradient(0, 0, width, 0)
-  grad.addColorStop(0, `rgb(${Math.max(0, r - 15)}, ${Math.max(0, g - 15)}, ${Math.max(0, b - 15)})`)
+  grad.addColorStop(0, `rgb(${Math.max(0, r - 16)}, ${Math.max(0, g - 16)}, ${Math.max(0, b - 16)})`)
   grad.addColorStop(0.5, `rgb(${r}, ${g}, ${b})`)
-  grad.addColorStop(1, `rgb(${Math.max(0, r - 10)}, ${Math.max(0, g - 10)}, ${Math.max(0, b - 10)})`)
+  grad.addColorStop(1, `rgb(${Math.max(0, r - 12)}, ${Math.max(0, g - 12)}, ${Math.max(0, b - 12)})`)
   ctx.fillStyle = grad
   ctx.fillRect(0, 0, width, height)
 
@@ -144,7 +140,7 @@ function getProceduralWoodPBR(hexColor) {
     ctx.stroke()
   }
 
-  // Fine wood pores
+  // Micro wood pores
   for (let j = 0; j < 120; j++) {
     const y = Math.random() * height
     ctx.fillStyle = 'rgba(0, 0, 0, 0.03)'
@@ -156,7 +152,7 @@ function getProceduralWoodPBR(hexColor) {
   colorTexture.wrapT = THREE.RepeatWrapping
   colorTexture.repeat.set(1, 1.5)
 
-  // 2. Micro Bump Canvas
+  // 2. Micro Bump Map
   const bumpCanvas = document.createElement('canvas')
   bumpCanvas.width = 256
   bumpCanvas.height = 512
@@ -179,12 +175,82 @@ function getProceduralWoodPBR(hexColor) {
   bumpTexture.repeat.set(1, 2)
 
   const result = { colorTexture, bumpTexture }
-  textureCache.set(hexColor, result)
+  woodTextureCache.set(hexColor, result)
   return result
 }
 
 /**
- * Creates engraved museum bronze plaque texture for the frieze
+ * Generates soft cumulus cloud texture for celestial portal
+ */
+function getProceduralCloudTexture() {
+  if (cloudTextureCache) return cloudTextureCache
+
+  const canvas = document.createElement('canvas')
+  canvas.width = 512
+  canvas.height = 256
+  const ctx = canvas.getContext('2d')
+  ctx.clearRect(0, 0, 512, 256)
+
+  // Cloud puffs with highlights on top and soft warm shading below
+  const puffs = [
+    { x: 120, y: 160, r: 85 },
+    { x: 200, y: 130, r: 105 },
+    { x: 290, y: 120, r: 115 },
+    { x: 380, y: 145, r: 95 },
+    { x: 450, y: 175, r: 75 },
+    { x: 60, y: 185, r: 65 },
+    { x: 250, y: 170, r: 90 },
+  ]
+
+  puffs.forEach((p) => {
+    const radial = ctx.createRadialGradient(p.x, p.y - p.r * 0.3, p.r * 0.1, p.x, p.y, p.r)
+    radial.addColorStop(0, 'rgba(255, 252, 244, 0.95)')
+    radial.addColorStop(0.45, 'rgba(253, 236, 210, 0.75)')
+    radial.addColorStop(0.75, 'rgba(215, 195, 180, 0.45)')
+    radial.addColorStop(1, 'rgba(200, 180, 170, 0)')
+    ctx.fillStyle = radial
+    ctx.beginPath()
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+    ctx.fill()
+  })
+
+  cloudTextureCache = new THREE.CanvasTexture(canvas)
+  return cloudTextureCache
+}
+
+let skyTextureCache = null
+function getProceduralSkyTexture() {
+  if (skyTextureCache) return skyTextureCache
+  const canvas = document.createElement('canvas')
+  canvas.width = 512
+  canvas.height = 512
+  const ctx = canvas.getContext('2d')
+
+  // Vertical dawn sky gradient with warm sunrise glow at center-bottom
+  const grad = ctx.createLinearGradient(0, 0, 0, 512)
+  grad.addColorStop(0, '#2b4463') // Deep celestial twilight
+  grad.addColorStop(0.35, '#4b6f96') // Morning blue
+  grad.addColorStop(0.65, '#d98b58') // Warm dawn terracotta
+  grad.addColorStop(0.85, '#f6c584') // Golden sunrise horizon
+  grad.addColorStop(1, '#fff5db') // Radiant gold base
+  ctx.fillStyle = grad
+  ctx.fillRect(0, 0, 512, 512)
+
+  // Radial sun halo glow in the upper sky
+  const radial = ctx.createRadialGradient(256, 170, 15, 256, 170, 260)
+  radial.addColorStop(0, 'rgba(255, 255, 250, 0.95)')
+  radial.addColorStop(0.35, 'rgba(255, 235, 180, 0.65)')
+  radial.addColorStop(0.7, 'rgba(250, 190, 130, 0.25)')
+  radial.addColorStop(1, 'rgba(255, 255, 255, 0)')
+  ctx.fillStyle = radial
+  ctx.fillRect(0, 0, 512, 512)
+
+  skyTextureCache = new THREE.CanvasTexture(canvas)
+  return skyTextureCache
+}
+
+/**
+ * Inscribed museum plaque for frieze
  */
 function createPlaqueTexture(doorNum, doorTitle) {
   const canvas = document.createElement('canvas')
@@ -192,11 +258,9 @@ function createPlaqueTexture(doorNum, doorTitle) {
   canvas.height = 128
   const ctx = canvas.getContext('2d')
 
-  // Dark patinated bronze background
   ctx.fillStyle = '#141815'
   ctx.fillRect(0, 0, 512, 128)
 
-  // Double gold engraved border lines
   ctx.strokeStyle = '#c5a059'
   ctx.lineWidth = 3
   ctx.strokeRect(8, 8, 496, 112)
@@ -204,15 +268,14 @@ function createPlaqueTexture(doorNum, doorTitle) {
   ctx.lineWidth = 1.2
   ctx.strokeRect(14, 14, 484, 100)
 
-  // Engraved gold lettering
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
 
-  ctx.font = 'bold 20px "Cinzel", serif'
+  ctx.font = 'bold 20px "Cinzel", "Playfair Display", serif'
   ctx.fillStyle = '#c5a059'
   ctx.fillText(`PORTAL ${doorNum}`, 256, 42)
 
-  ctx.font = 'bold 36px "Cinzel", serif'
+  ctx.font = 'bold 36px "Cinzel", "Playfair Display", serif'
   ctx.fillStyle = '#fff4db'
   ctx.fillText(doorTitle, 256, 86)
 
@@ -224,6 +287,7 @@ export function createDoorModel(doorData, isDark = false) {
   doorGroup.position.set(doorData.xPos, 0, -1.2)
 
   const { colorTexture, bumpTexture } = getProceduralWoodPBR(doorData.woodColor)
+  const cloudTexture = getProceduralCloudTexture()
 
   const innerWidth = 1.62
   const innerHeight = 3.52
@@ -231,7 +295,7 @@ export function createDoorModel(doorData, isDark = false) {
   const architraveDepth = 0.42
 
   // ========================================================
-  // 1. CLASSICAL MOLDED ARCHITRAVE & ENTABLATURE (DOOR FRAME)
+  // 1. CLASSICAL ARCHITRAVE & ENTABLATURE (DOOR FRAME)
   // ========================================================
   const frameMat = new THREE.MeshStandardMaterial({
     color: doorData.frameColor,
@@ -249,7 +313,7 @@ export function createDoorModel(doorData, isDark = false) {
   leftJamb.receiveShadow = true
   doorGroup.add(leftJamb)
 
-  // Left Outer Stepped Architrave Casing
+  // Left Stepped Casing
   const leftCasing = new THREE.Mesh(
     new THREE.BoxGeometry(0.06, innerHeight + 0.36, architraveDepth + 0.05),
     frameMat
@@ -267,7 +331,7 @@ export function createDoorModel(doorData, isDark = false) {
   rightJamb.receiveShadow = true
   doorGroup.add(rightJamb)
 
-  // Right Outer Stepped Architrave Casing
+  // Right Stepped Casing
   const rightCasing = new THREE.Mesh(
     new THREE.BoxGeometry(0.06, innerHeight + 0.36, architraveDepth + 0.05),
     frameMat
@@ -286,7 +350,7 @@ export function createDoorModel(doorData, isDark = false) {
   lintel.receiveShadow = true
   doorGroup.add(lintel)
 
-  // Projecting Classical Dentil Cornice Pediment
+  // Projecting Dentil Cornice Pediment
   const cornice = new THREE.Mesh(
     new THREE.BoxGeometry(lintelWidth + 0.18, 0.14, architraveDepth + 0.16),
     frameMat
@@ -295,7 +359,7 @@ export function createDoorModel(doorData, isDark = false) {
   cornice.castShadow = true
   doorGroup.add(cornice)
 
-  // Beveled Granite / Marble Threshold Plinth Step
+  // Granite/Marble Threshold Step
   const stepMat = new THREE.MeshStandardMaterial({
     color: isDark ? 0x222823 : 0xdfd7c8,
     roughness: 0.42,
@@ -310,7 +374,7 @@ export function createDoorModel(doorData, isDark = false) {
   doorGroup.add(step)
 
   // ========================================================
-  // 2. DEDICATED ARCHITECTURAL DOWNLIGHT SCONCE
+  // 2. DEDICATED TOP DOWNLIGHT SCONCE
   // ========================================================
   const sconceBrassMat = new THREE.MeshStandardMaterial({
     color: doorData.accentColor,
@@ -318,7 +382,6 @@ export function createDoorModel(doorData, isDark = false) {
     metalness: 0.88,
   })
 
-  // Sconce Arm
   const sconceArm = new THREE.Mesh(
     new THREE.CylinderGeometry(0.022, 0.022, 0.22, 12),
     sconceBrassMat
@@ -327,7 +390,6 @@ export function createDoorModel(doorData, isDark = false) {
   sconceArm.position.set(0, innerHeight / 2 + 0.65, 0.22)
   doorGroup.add(sconceArm)
 
-  // Sconce Bell Shade
   const sconceShade = new THREE.Mesh(
     new THREE.ConeGeometry(0.1, 0.12, 16),
     sconceBrassMat
@@ -335,7 +397,7 @@ export function createDoorModel(doorData, isDark = false) {
   sconceShade.position.set(0, innerHeight / 2 + 0.63, 0.32)
   doorGroup.add(sconceShade)
 
-  // Dedicated Downward Spotlight (Washes down the door face without harsh hotspot)
+  // Focused Downward Wash (no harsh hotspot)
   const sconceSpot = new THREE.SpotLight(
     doorData.sconceLightColor,
     isDark ? 3.6 : 2.6,
@@ -349,82 +411,186 @@ export function createDoorModel(doorData, isDark = false) {
   doorGroup.add(sconceSpot.target)
 
   // ========================================================
-  // 3. INTERIOR ARCHITECTURAL PORTAL CORRIDOR BEHIND DOOR
+  // 3. CELESTIAL HEAVENLY WORLD (BEHIND DOORWAY)
+  // (Layered clouds, golden sunlight, volumetric rays, stardust)
   // ========================================================
   const portalChamber = new THREE.Group()
-  portalChamber.position.set(0, 0.18, -1.2)
+  portalChamber.position.set(0, 0.18, 0)
   doorGroup.add(portalChamber)
 
-  // Corridor Side Walls
-  const corridorWallMat = new THREE.MeshStandardMaterial({
-    color: 0xf5eee1,
-    roughness: 0.6,
+  // 3A. Warm Golden Architectural Corridor Tunnel (Inner Jamb Depth)
+  const tunnelMat = new THREE.MeshStandardMaterial({
+    color: isDark ? 0x222a24 : 0xf7ede0,
+    roughness: 0.35,
+    metalness: 0.18,
   })
-  const corridorLeft = new THREE.Mesh(
-    new THREE.PlaneGeometry(2.4, innerHeight),
-    corridorWallMat
-  )
-  corridorLeft.rotateY(Math.PI / 2)
-  corridorLeft.position.set(-innerWidth / 2, 0, -1.2)
-  portalChamber.add(corridorLeft)
 
-  const corridorRight = new THREE.Mesh(
-    new THREE.PlaneGeometry(2.4, innerHeight),
-    corridorWallMat
+  // Tunnel Left Wall
+  const tunnelLeft = new THREE.Mesh(
+    new THREE.BoxGeometry(0.04, innerHeight, 3.8),
+    tunnelMat
   )
-  corridorRight.rotateY(-Math.PI / 2)
-  corridorRight.position.set(innerWidth / 2, 0, -1.2)
-  portalChamber.add(corridorRight)
+  tunnelLeft.position.set(-innerWidth / 2, 0, -1.9)
+  portalChamber.add(tunnelLeft)
 
-  // Glowing Heavenly Aperture Back Wall
-  const portalBackMat = new THREE.MeshBasicMaterial({
-    color: doorData.portalLightColor,
-    transparent: true,
-    opacity: 0.95,
+  // Tunnel Right Wall
+  const tunnelRight = new THREE.Mesh(
+    new THREE.BoxGeometry(0.04, innerHeight, 3.8),
+    tunnelMat
+  )
+  tunnelRight.position.set(innerWidth / 2, 0, -1.9)
+  portalChamber.add(tunnelRight)
+
+  // Tunnel Ceiling
+  const tunnelCeiling = new THREE.Mesh(
+    new THREE.BoxGeometry(innerWidth, 0.04, 3.8),
+    tunnelMat
+  )
+  tunnelCeiling.position.set(0, innerHeight / 2, -1.9)
+  portalChamber.add(tunnelCeiling)
+
+  // Tunnel Floor
+  const tunnelFloorMat = new THREE.MeshStandardMaterial({
+    color: isDark ? 0x1b221d : 0xefe5d6,
+    roughness: 0.3,
+    metalness: 0.2,
   })
-  const portalBack = new THREE.Mesh(
-    new THREE.PlaneGeometry(innerWidth, innerHeight),
-    portalBackMat
+  const tunnelFloor = new THREE.Mesh(
+    new THREE.BoxGeometry(innerWidth, 0.04, 3.8),
+    tunnelFloorMat
   )
-  portalBack.position.set(0, 0, -2.4)
-  portalChamber.add(portalBack)
+  tunnelFloor.position.set(0, -innerHeight / 2, -1.9)
+  portalChamber.add(tunnelFloor)
 
-  // Soft Volumetric God Rays (Layered smooth transparent planes, not a faceted cylinder)
-  const godRayMat = new THREE.MeshBasicMaterial({
-    color: doorData.portalLightColor,
+  // 3B. Celestial Sky Backdrop (Dawn sunrise glow)
+  const skyTexture = getProceduralSkyTexture()
+  const skyMat = new THREE.MeshBasicMaterial({
+    map: skyTexture,
+    side: THREE.DoubleSide,
+  })
+  const skyPlane = new THREE.Mesh(new THREE.PlaneGeometry(innerWidth * 2.4, innerHeight * 1.9), skyMat)
+  skyPlane.position.set(0, 0.25, -3.7)
+  portalChamber.add(skyPlane)
+
+  // 3C. Golden Sun Core (Glowing celestial orb in upper half of doorway)
+  const sunMat = new THREE.MeshBasicMaterial({
+    color: 0xfffdf5,
+  })
+  const sunDisc = new THREE.Mesh(new THREE.CircleGeometry(0.52, 32), sunMat)
+  sunDisc.position.set(0, 0.72, -3.5)
+  portalChamber.add(sunDisc)
+
+  // Sun Corona Bloom Plane
+  const coronaMat = new THREE.MeshBasicMaterial({
+    color: 0xffd896,
     transparent: true,
-    opacity: 0.22,
+    opacity: 0.65,
     blending: THREE.AdditiveBlending,
     side: THREE.DoubleSide,
     depthWrite: false,
   })
-  const godRayPlane1 = new THREE.Mesh(new THREE.PlaneGeometry(innerWidth * 0.9, innerHeight * 0.9), godRayMat)
-  godRayPlane1.position.set(0, 0, -0.6)
-  portalChamber.add(godRayPlane1)
+  const sunCorona = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 2.4), coronaMat)
+  sunCorona.position.set(0, 0.72, -3.4)
+  portalChamber.add(sunCorona)
 
-  const godRayPlane2 = new THREE.Mesh(new THREE.PlaneGeometry(innerWidth * 0.7, innerHeight * 0.8), godRayMat)
-  godRayPlane2.position.set(0, 0, -1.4)
-  portalChamber.add(godRayPlane2)
+  // 3D. Layered Clouds (Distant Horizon + Floating Midground + Foreground Threshold)
+  // Layer 1: Distant Horizon Clouds
+  const cloudMat1 = new THREE.MeshBasicMaterial({
+    map: cloudTexture,
+    transparent: true,
+    opacity: 0.85,
+    blending: THREE.NormalBlending,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+  })
+  const cloudLayer1 = new THREE.Mesh(new THREE.PlaneGeometry(innerWidth * 1.8, 1.6), cloudMat1)
+  cloudLayer1.position.set(0, -0.32, -2.6)
+  portalChamber.add(cloudLayer1)
 
-  // Internal Portal Light
-  const portalLight = new THREE.PointLight(doorData.portalLightColor, 1.4, 7.5)
-  portalLight.position.set(0, 0.4, -0.8)
+  // Layer 2: Mid-ground Floating Cumulus
+  const cloudMat2 = new THREE.MeshBasicMaterial({
+    map: cloudTexture,
+    transparent: true,
+    opacity: 0.9,
+    blending: THREE.NormalBlending,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+  })
+  const cloudLayer2 = new THREE.Mesh(new THREE.PlaneGeometry(innerWidth * 1.5, 1.4), cloudMat2)
+  cloudLayer2.position.set(0.18, -0.65, -1.8)
+  portalChamber.add(cloudLayer2)
+
+  // Layer 3: Foreground Threshold Mist
+  const cloudMat3 = new THREE.MeshBasicMaterial({
+    map: cloudTexture,
+    transparent: true,
+    opacity: 0.75,
+    blending: THREE.NormalBlending,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+  })
+  const cloudLayer3 = new THREE.Mesh(new THREE.PlaneGeometry(innerWidth * 1.3, 1.1), cloudMat3)
+  cloudLayer3.position.set(-0.15, -0.85, -1.1)
+  portalChamber.add(cloudLayer3)
+
+  // 3E. Volumetric Sunbeam Light Rays (Angled transparent additive planes)
+  const rayMat = new THREE.MeshBasicMaterial({
+    color: 0xffebd2,
+    transparent: true,
+    opacity: 0.35,
+    blending: THREE.AdditiveBlending,
+    side: THREE.DoubleSide,
+    depthWrite: false,
+  })
+  const rayPlane1 = new THREE.Mesh(new THREE.PlaneGeometry(innerWidth * 1.2, innerHeight * 1.1), rayMat)
+  rayPlane1.rotation.z = 0.15
+  rayPlane1.position.set(0, 0.45, -1.3)
+  portalChamber.add(rayPlane1)
+
+  const rayPlane2 = new THREE.Mesh(new THREE.PlaneGeometry(innerWidth * 1.1, innerHeight * 1.0), rayMat)
+  rayPlane2.rotation.z = -0.18
+  rayPlane2.position.set(0, 0.35, -1.6)
+  portalChamber.add(rayPlane2)
+
+  // 3F. Floating Golden Particles (Stardust) in the Heavenly Shaft
+  const stardustCount = 64
+  const stardustGeo = new THREE.BufferGeometry()
+  const stardustPos = new Float32Array(stardustCount * 3)
+  for (let s = 0; s < stardustCount * 3; s += 3) {
+    stardustPos[s] = (Math.random() - 0.5) * innerWidth * 0.95
+    stardustPos[s + 1] = (Math.random() - 0.5) * innerHeight * 0.85
+    stardustPos[s + 2] = -0.2 - Math.random() * 3.2
+  }
+  stardustGeo.setAttribute('position', new THREE.BufferAttribute(stardustPos, 3))
+  const stardustMat = new THREE.PointsMaterial({
+    color: 0xfff4d6,
+    size: 0.055,
+    transparent: true,
+    opacity: 0.9,
+    blending: THREE.AdditiveBlending,
+  })
+  const stardust = new THREE.Points(stardustGeo, stardustMat)
+  portalChamber.add(stardust)
+
+  // Internal Portal Point Light
+  const portalLight = new THREE.PointLight(doorData.portalLightColor, 1.8, 9.0)
+  portalLight.position.set(0, 0.5, -1.4)
   portalChamber.add(portalLight)
 
   // Radiant Light Pool on Floor
   const poolMat = new THREE.MeshBasicMaterial({
     color: doorData.portalLightColor,
     transparent: true,
-    opacity: 0.22,
+    opacity: 0.32,
     blending: THREE.AdditiveBlending,
   })
-  const lightPool = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 2.4), poolMat)
+  const lightPool = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 2.6), poolMat)
   lightPool.rotateX(-Math.PI / 2)
   lightPool.position.set(0, -innerHeight / 2 - 0.07, 0.95)
   doorGroup.add(lightPool)
 
   // ========================================================
-  // 4. ROTATING DOOR LEAF PIVOT (LEFT-HINGED AT INNER JAMB)
+  // 4. ROTATING DOOR LEAF PIVOT (LEFT HINGED AT INNER JAMB)
   // ========================================================
   const pivotX = -innerWidth / 2 + 0.02
   const doorPivot = new THREE.Group()
@@ -456,16 +622,16 @@ export function createDoorModel(doorData, isDark = false) {
 
   // ========================================================
   // 5. FOUR DEEPLY BEVELED CLASSICAL ARCHITECTURAL PANELS
-  // (Pure architectural woodwork — zero cartoon dots)
+  // (Zero cartoon dots — pure architectural woodwork)
   // ========================================================
   const panelConfigs = [
-    // Top Left (Upper tall panel)
+    // Top Left
     { x: doorWidth * 0.29, y: 0.82, w: doorWidth * 0.38, h: 1.24 },
-    // Top Right (Upper tall panel)
+    // Top Right
     { x: doorWidth * 0.71, y: 0.82, w: doorWidth * 0.38, h: 1.24 },
-    // Bottom Left (Lower standard panel)
+    // Bottom Left
     { x: doorWidth * 0.29, y: -0.84, w: doorWidth * 0.38, h: 1.12 },
-    // Bottom Right (Lower standard panel)
+    // Bottom Right
     { x: doorWidth * 0.71, y: -0.84, w: doorWidth * 0.38, h: 1.12 },
   ]
 
@@ -492,7 +658,7 @@ export function createDoorModel(doorData, isDark = false) {
   })
 
   panelConfigs.forEach((p) => {
-    // A. Outer Bolection Raised Chamfer Molding Rim
+    // Bolection Rim
     const bolection = new THREE.Mesh(
       new THREE.BoxGeometry(p.w, p.h, 0.04),
       bolectionMat
@@ -500,7 +666,7 @@ export function createDoorModel(doorData, isDark = false) {
     bolection.position.set(p.x, p.y, doorDepth / 2 + 0.02)
     doorPivot.add(bolection)
 
-    // B. Recessed Shadow Gap Reveal
+    // Shadow Reveal
     const recess = new THREE.Mesh(
       new THREE.BoxGeometry(p.w - 0.09, p.h - 0.09, 0.016),
       recessMat
@@ -508,7 +674,7 @@ export function createDoorModel(doorData, isDark = false) {
     recess.position.set(p.x, p.y, doorDepth / 2 + 0.026)
     doorPivot.add(recess)
 
-    // C. Raised Center Panel Field with Bevel
+    // Center Field with Bevel
     const field = new THREE.Mesh(
       new THREE.BoxGeometry(p.w - 0.16, p.h - 0.16, 0.026),
       fieldMat
@@ -554,7 +720,7 @@ export function createDoorModel(doorData, isDark = false) {
     botFinial.position.set(hingeX, yHinge - 0.09, 0.09)
     doorGroup.add(botFinial)
 
-    // Mounting Plate with Rivets
+    // Mounting Plate
     const plate = new THREE.Mesh(
       new THREE.BoxGeometry(0.014, 0.12, 0.055),
       hingeMat
@@ -576,14 +742,14 @@ export function createDoorModel(doorData, isDark = false) {
     metalness: 0.92,
   })
 
-  // A. Classical Beveled Escutcheon Backplate
+  // Escutcheon Backplate
   const backplate = new THREE.Mesh(
     new THREE.BoxGeometry(0.095, 0.44, 0.02),
     hardwareMat
   )
   handleGroup.add(backplate)
 
-  // B. Spindle Rosette
+  // Spindle Rosette
   const rosette = new THREE.Mesh(
     new THREE.CylinderGeometry(0.026, 0.026, 0.024, 16),
     hardwareMat
@@ -592,7 +758,7 @@ export function createDoorModel(doorData, isDark = false) {
   rosette.position.set(0, 0.08, 0.018)
   handleGroup.add(rosette)
 
-  // C. Horizontal Lever Handle (Extends towards center of door)
+  // Horizontal Lever Handle
   const leverShaft = new THREE.Mesh(
     new THREE.CylinderGeometry(0.016, 0.016, 0.065, 12),
     hardwareMat
@@ -608,7 +774,7 @@ export function createDoorModel(doorData, isDark = false) {
   leverArm.position.set(-0.08, 0.08, 0.08)
   handleGroup.add(leverArm)
 
-  // D. Antique Keyhole with Teardrop Escutcheon
+  // Antique Keyhole
   const keyholeBackMat = new THREE.MeshBasicMaterial({ color: 0x050505 })
   const keyholeTop = new THREE.Mesh(new THREE.CircleGeometry(0.016, 16), keyholeBackMat)
   keyholeTop.position.set(0, -0.09, 0.012)
@@ -619,7 +785,7 @@ export function createDoorModel(doorData, isDark = false) {
   handleGroup.add(keyholeDrop)
 
   // ========================================================
-  // 8. OVERHEAD INSCRIBED MONUMENTAL BRONZE PLAQUE
+  // 8. OVERHEAD INSCRIBED BRONZE PLAQUE
   // ========================================================
   const plaqueTex = createPlaqueTexture(doorData.num, doorData.title)
   const plaqueMat = new THREE.MeshStandardMaterial({
@@ -635,7 +801,6 @@ export function createDoorModel(doorData, isDark = false) {
   plaque.castShadow = true
   doorGroup.add(plaque)
 
-  // Inscribed Gold & Bronze Face Plate (Displays Door Num & Title in 3D Scene)
   const plaqueFaceMat = new THREE.MeshStandardMaterial({
     map: plaqueTex,
     roughness: 0.3,
@@ -648,7 +813,6 @@ export function createDoorModel(doorData, isDark = false) {
   plaqueFace.position.set(0, innerHeight / 2 + 0.34, 0.262)
   doorGroup.add(plaqueFace)
 
-  // Polished Metallic Plaque Border
   const plaqueRimMat = new THREE.MeshStandardMaterial({
     color: doorData.accentColor,
     roughness: 0.24,
@@ -676,14 +840,18 @@ export function createDoorModel(doorData, isDark = false) {
   hitBox.position.set(0, 0.18, 0.25)
   doorGroup.add(hitBox)
 
-  // Attach metadata to hitBox for interaction controller
+  // Attach metadata
   hitBox.userData = {
     isDoorHitBox: true,
     doorData,
     doorGroup,
     doorPivot,
     portalChamber,
-    godRays: godRayPlane1,
+    godRays: rayPlane1,
+    cloudLayer1,
+    cloudLayer2,
+    sunCorona,
+    stardust,
     portalLight,
     lightPool,
     sconceSpot,
@@ -695,7 +863,11 @@ export function createDoorModel(doorData, isDark = false) {
     doorPivot,
     hitBox,
     portalChamber,
-    godRays: godRayPlane1,
+    godRays: rayPlane1,
+    cloudLayer1,
+    cloudLayer2,
+    sunCorona,
+    stardust,
     portalLight,
     lightPool,
     sconceSpot,

@@ -6,6 +6,84 @@
   position: relative;
 }
 
+/* ===================================================
+   PRIMARY 3D MONUMENTAL HERO SECTION
+   =================================================== */
+.home-3d-hero {
+  width: 100%;
+  position: relative;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--warm-border);
+}
+
+.home-3d-fallback {
+  width: 100%;
+  min-height: calc(100vh - 75px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  background-color: var(--bg-card);
+}
+
+.fallback-title {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  color: var(--text-heading);
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.fallback-sub {
+  text-align: center;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
+
+.fallback-doors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.fallback-card {
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--warm-border);
+  border-radius: 12px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.fallback-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--sage-green);
+}
+
+.fallback-card .card-num {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--terracotta);
+  margin-bottom: 8px;
+}
+
+.fallback-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--text-heading);
+  margin-bottom: 6px;
+}
+
+.fallback-card p {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
 .home-container {
   width: 100%;
   max-width: 1140px;

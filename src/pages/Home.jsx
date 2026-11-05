@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import CinematicPortalDoors from '../components/doors/CinematicPortalDoors'
+import WebGLErrorBoundary from '../components/WebGLErrorBoundary'
 import soundEngine from '../utils/soundEngine'
 import './Home.css'
 
-// Gentle Landing-Page Reveal (Subtle, clean, 60fps)
+// Gentle Editorial Reveal
 const homeVariants = {
-  initial: { opacity: 0, y: 12 },
+  initial: { opacity: 0, y: 10 },
   animate: {
     opacity: 1,
     y: 0,
@@ -24,6 +26,44 @@ const homeVariants = {
   },
 }
 
+function HomeFallback() {
+  return (
+    <div className="home-3d-fallback">
+      <div className="container">
+        <h2 className="fallback-title">Grand Architectural Colonnade</h2>
+        <p className="fallback-sub">Select an architectural portal to enter Harish's portfolio:</p>
+        <div className="fallback-doors-grid">
+          <Link to="/about" className="fallback-card">
+            <span className="card-num">01</span>
+            <h3>About</h3>
+            <p>Biography & 4 Creative Pillars</p>
+          </Link>
+          <Link to="/gallery" className="fallback-card">
+            <span className="card-num">02</span>
+            <h3>Art Gallery</h3>
+            <p>7 Original Museum Artworks</p>
+          </Link>
+          <Link to="/projects" className="fallback-card">
+            <span className="card-num">03</span>
+            <h3>Projects</h3>
+            <p>3D WebGL Lab & 5 Interactive Rooms</p>
+          </Link>
+          <Link to="/skills" className="fallback-card">
+            <span className="card-num">04</span>
+            <h3>Skills</h3>
+            <p>Six Master Disciplines</p>
+          </Link>
+          <Link to="/contact" className="fallback-card">
+            <span className="card-num">05</span>
+            <h3>Contact</h3>
+            <p>Studio Inquiries & Direct Line</p>
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function Home() {
   return (
     <motion.div
@@ -33,10 +73,21 @@ export default function Home() {
       animate="animate"
       exit="exit"
     >
+      {/* ===================================================
+          PRIMARY MONUMENTAL HERO: 5 PHOTOREALISTIC 3D DOORS
+          Immediately presented in the Grand Ivory Marble Hall
+          =================================================== */}
+      <section className="home-3d-hero">
+        <WebGLErrorBoundary fallback={<HomeFallback />}>
+          <CinematicPortalDoors />
+        </WebGLErrorBoundary>
+      </section>
+
+      {/* ===================================================
+          STUDIO EDITORIAL OVERVIEW & ARCHITECTURAL MONOGRAPH
+          =================================================== */}
       <div className="container home-container">
-        {/* ===================================================
-            HERO MONUMENT SECTION
-            =================================================== */}
+        {/* Editorial Monument Section */}
         <section className="home-hero-center">
           <div className="home-overline-wrap">
             <span className="home-overline-badge">
@@ -59,24 +110,14 @@ export default function Home() {
             Multidisciplinary Artist, Creative Developer & Spatial Explorer bridging classical realistic oil painting, fine chiaroscuro draftsmanship, and sequential Japanese manga with interactive 3D WebGL architectures.
           </p>
 
-          {/* Primary Action Buttons */}
+          {/* Quick Studio Navigation Pills (Zero Explore links) */}
           <div className="home-pill-nav">
-            <Link
-              to="/explore"
-              className="home-nav-pill home-nav-pill--portal"
-              onMouseEnter={() => soundEngine.playHoverTick()}
-            >
-              <span className="pill-dot" />
-              <span>Enter 3D Colonnade</span>
-              <span className="pill-arrow">✦</span>
-            </Link>
-
             <Link
               to="/gallery"
               className="home-nav-pill home-nav-pill--primary"
               onMouseEnter={() => soundEngine.playHoverTick()}
             >
-              <span>Explore Art Gallery</span>
+              <span>Explore Art Gallery (7 Works)</span>
               <span className="pill-arrow">→</span>
             </Link>
 
@@ -85,7 +126,7 @@ export default function Home() {
               className="home-nav-pill home-nav-pill--secondary"
               onMouseEnter={() => soundEngine.playHoverTick()}
             >
-              <span>View 3D Lab Projects</span>
+              <span>View 3D Lab Projects (5 Apps)</span>
               <span className="pill-arrow">→</span>
             </Link>
 
@@ -97,33 +138,28 @@ export default function Home() {
               <span>Biography & Pillars</span>
               <span className="pill-arrow">→</span>
             </Link>
+
+            <Link
+              to="/skills"
+              className="home-nav-pill home-nav-pill--ghost"
+              onMouseEnter={() => soundEngine.playHoverTick()}
+            >
+              <span>Six Disciplines</span>
+              <span className="pill-arrow">→</span>
+            </Link>
+
+            <Link
+              to="/contact"
+              className="home-nav-pill home-nav-pill--ghost"
+              onMouseEnter={() => soundEngine.playHoverTick()}
+            >
+              <span>Studio Contact</span>
+              <span className="pill-arrow">→</span>
+            </Link>
           </div>
         </section>
 
         <div className="home-hairline" />
-
-        {/* ===================================================
-            IMMERSIVE 3D EXPLORE TEASER BANNER
-            =================================================== */}
-        <section className="home-portal-teaser">
-          <div className="teaser-inner">
-            <div className="teaser-content">
-              <span className="teaser-badge">SPATIAL NAVIGATION</span>
-              <h3 className="teaser-title">The Five Atelier Portals</h3>
-              <p className="teaser-desc">
-                Step inside an interactive 3D European museum salon featuring physically modeled architectural doors leading into About, Art Gallery, Projects, Skills, and Contact.
-              </p>
-            </div>
-            <Link
-              to="/explore"
-              className="teaser-cta-button"
-              onMouseEnter={() => soundEngine.playHoverTick()}
-            >
-              <span>Launch 3D Explore</span>
-              <span className="cta-icon">🏛️</span>
-            </Link>
-          </div>
-        </section>
 
         {/* ===================================================
             FOUR CREATIVE PILLARS

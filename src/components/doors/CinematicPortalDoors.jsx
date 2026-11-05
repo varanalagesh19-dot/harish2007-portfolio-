@@ -20,6 +20,7 @@ export default function CinematicPortalDoors() {
     complete3DDoorTransition,
     triggerPortalNavigation,
     isNavigating,
+    setIsNavigating,
   } = usePortalTransition()
 
   const [activeHoverDoor, setActiveHoverDoor] = useState(null)
@@ -54,8 +55,11 @@ export default function CinematicPortalDoors() {
 
     // 1. Scene & Camera Setup (Calibrated for 5-Door Grand Salon Colonnade)
     const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(44, width / height, 0.1, 100)
-    camera.position.set(0, 1.35, 9.8)
+    const isMobile = width < 768
+    const fov = isMobile ? 58 : 44
+    const initZ = isMobile ? 12.0 : 9.8
+    const camera = new THREE.PerspectiveCamera(fov, width / height, 0.1, 100)
+    camera.position.set(0, 1.35, initZ)
 
     // 2. High-Performance Three.js WebGL Renderer
     const isDark = theme === 'dark'
@@ -94,6 +98,7 @@ export default function CinematicPortalDoors() {
       setTransitionState,
       setPortalLightOpacity,
       complete3DDoorTransition,
+      setIsNavigating,
     })
     controllerRef.current = controller
 
@@ -212,7 +217,9 @@ export default function CinematicPortalDoors() {
       if (!mountEl) return
       const w = mountEl.clientWidth
       const h = mountEl.clientHeight
+      const mobile = w < 768
       camera.aspect = w / h
+      camera.fov = mobile ? 58 : 44
       camera.updateProjectionMatrix()
       renderer.setSize(w, h)
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
@@ -237,7 +244,7 @@ export default function CinematicPortalDoors() {
   }, [theme, setTransitionState, setPortalLightOpacity, complete3DDoorTransition])
 
   return (
-    <div className="portal-doors-wrapper" ref={wrapperRef}>
+    <div className={`portal-doors-wrapper ${isNavigating ? 'portal-doors-wrapper--navigating' : ''}`} ref={wrapperRef}>
       {/* Three.js Canvas Mount */}
       <div className="portal-canvas-mount" ref={mountRef} />
 

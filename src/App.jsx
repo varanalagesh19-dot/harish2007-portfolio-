@@ -17,7 +17,6 @@ import KineticSpotlight from './components/KineticSpotlight'
 
 // Lazy-Loaded Top-Level Pages (Strict Multi-Page Separation)
 const Home = lazy(() => import('./pages/Home'))
-const Explore = lazy(() => import('./pages/Explore'))
 const About = lazy(() => import('./pages/About'))
 const Gallery = lazy(() => import('./pages/Gallery'))
 const Projects = lazy(() => import('./pages/Projects'))
@@ -188,7 +187,7 @@ function AnimatedAppRoutes() {
         <Routes location={location} key={location.pathname}>
           {/* Top-Level Independent Routes */}
           <Route path="/" element={<Home />} />
-          <Route path="/explore" element={<Explore />} />
+          <Route path="/explore" element={<Navigate to="/" replace />} />
           <Route path="/about" element={<About />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/projects" element={<Projects />} />

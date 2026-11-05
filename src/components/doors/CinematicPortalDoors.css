@@ -46,6 +46,28 @@
   align-items: center;
   text-align: center;
   pointer-events: none;
+  transition: opacity 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.portal-bottom-dock {
+  padding-bottom: 24px;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  transition: opacity 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Smooth Fade-Out During Cinematic Fly-Through */
+.portal-doors-wrapper--navigating .portal-top-header {
+  opacity: 0;
+  transform: translateY(-24px);
+  pointer-events: none;
+}
+
+.portal-doors-wrapper--navigating .portal-bottom-dock {
+  opacity: 0;
+  transform: translateY(24px);
+  pointer-events: none;
 }
 
 .portal-overline-row {

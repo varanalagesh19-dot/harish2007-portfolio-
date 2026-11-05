@@ -22,12 +22,14 @@ export class DoorInteractionController {
     setTransitionState,
     setPortalLightOpacity,
     complete3DDoorTransition,
+    setIsNavigating,
   }) {
     this.camera = camera
     this.doors = doors
     this.setTransitionState = setTransitionState
     this.setPortalLightOpacity = setPortalLightOpacity
     this.complete3DDoorTransition = complete3DDoorTransition
+    this.setIsNavigating = setIsNavigating
 
     this.activeTimeline = null
     this.hoveredDoor = null
@@ -102,6 +104,7 @@ export class DoorInteractionController {
     if (this.isLocked) return
     this.isLocked = true
 
+    this.setIsNavigating?.(true)
     this.setTransitionState(PORTAL_STATES.SELECTED)
     soundEngine.playPortalInteract()
     soundEngine.playPageTurn()
@@ -111,7 +114,16 @@ export class DoorInteractionController {
       this.activeTimeline.kill()
     }
 
-    const { doorData, doorPivot, godRays, portalLight, lightPool } = doorItem
+    const {
+      doorData,
+      doorPivot,
+      godRays,
+      portalLight,
+      lightPool,
+      sunCorona,
+      cloudLayer1,
+      cloudLayer2,
+    } = doorItem
     const tl = gsap.timeline()
     this.activeTimeline = tl
 
@@ -179,17 +191,53 @@ export class DoorInteractionController {
     tl.to(
       godRays.material,
       {
-        opacity: 0.55,
+        opacity: 0.65,
         duration: 1.0,
         ease: 'power2.out',
       },
       0.25
     )
 
+    if (sunCorona?.material) {
+      tl.to(
+        sunCorona.material,
+        {
+          opacity: 0.95,
+          duration: 1.0,
+          ease: 'power2.out',
+        },
+        0.25
+      )
+    }
+
+    if (cloudLayer1) {
+      tl.to(
+        cloudLayer1.position,
+        {
+          y: -0.35,
+          duration: 1.2,
+          ease: 'power1.out',
+        },
+        0.2
+      )
+    }
+
+    if (cloudLayer2) {
+      tl.to(
+        cloudLayer2.position,
+        {
+          x: 0.25,
+          duration: 1.2,
+          ease: 'power1.out',
+        },
+        0.2
+      )
+    }
+
     tl.to(
       portalLight,
       {
-        intensity: 3.5,
+        intensity: 4.2,
         duration: 1.0,
         ease: 'power2.out',
       },

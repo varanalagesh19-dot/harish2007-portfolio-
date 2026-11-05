@@ -9,7 +9,6 @@ import '../styles/navigation.css'
 
 const navLinks = [
   { path: '/', label: 'Home' },
-  { path: '/explore', label: 'Explore 3D', isSpecial: true },
   { path: '/about', label: 'About' },
   { path: '/gallery', label: 'Art Gallery' },
   { path: '/projects', label: 'Projects' },
