@@ -22,7 +22,7 @@ export default function Ambient3DBackground() {
   const isDedicated3DPageRef = useRef(
     location.pathname.startsWith('/projects/') && location.pathname !== '/projects'
   )
-  const isExplorePageRef = useRef(location.pathname === '/explore')
+  const isColonnadeActiveRef = useRef(location.pathname === '/' || location.pathname === '/explore')
   const focusModeRef = useRef(focusMode)
 
   // Material and palette refs
@@ -37,7 +37,7 @@ export default function Ambient3DBackground() {
   useEffect(() => {
     isDedicated3DPageRef.current =
       location.pathname.startsWith('/projects/') && location.pathname !== '/projects'
-    isExplorePageRef.current = location.pathname === '/explore'
+    isColonnadeActiveRef.current = location.pathname === '/' || location.pathname === '/explore'
     currentTargetRef.current =
       ROUTE_TARGETS[location.pathname] || { targetX: 0, targetY: 0, targetZ: 7.0 }
   }, [location.pathname])
@@ -178,8 +178,8 @@ export default function Ambient3DBackground() {
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate)
 
-      // Pause during Explore page (CinematicPortalDoors active), dedicated 3D project detail routes, or Focus Mode
-      if (isExplorePageRef.current || isDedicated3DPageRef.current || focusModeRef.current || document.hidden) {
+      // Pause during Homepage / Explore (CinematicPortalDoors active), dedicated 3D project detail routes, or Focus Mode
+      if (isColonnadeActiveRef.current || isDedicated3DPageRef.current || focusModeRef.current || document.hidden) {
         return
       }
 
@@ -311,7 +311,7 @@ export default function Ambient3DBackground() {
 
   const isDedicated3DPage =
     location.pathname.startsWith('/projects/') && location.pathname !== '/projects'
-  const isExplorePage = location.pathname === '/explore'
+  const isColonnadeActive = location.pathname === '/' || location.pathname === '/explore'
 
   return (
     <div
@@ -322,8 +322,8 @@ export default function Ambient3DBackground() {
         inset: 0,
         zIndex: 0,
         pointerEvents: 'none',
-        opacity: (isDedicated3DPage || focusMode || isExplorePage) ? 0 : 1,
-        display: (focusMode || isExplorePage) ? 'none' : 'block',
+        opacity: (isDedicated3DPage || focusMode || isColonnadeActive) ? 0 : 1,
+        display: (focusMode || isColonnadeActive) ? 'none' : 'block',
         transition: 'opacity 0.6s ease',
       }}
       aria-hidden="true"
