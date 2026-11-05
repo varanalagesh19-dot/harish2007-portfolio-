@@ -1,0 +1,204 @@
+/* 3D Spatial Particle Web Styles */
+
+.spatial-particle-web-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--warm-border);
+  border-left: 4px solid var(--terracotta);
+  border-radius: 6px;
+  padding: 24px 28px;
+  margin-bottom: 40px;
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.synapse-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.synapse-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--deep-olive);
+}
+
+.synapse-pulse-node {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--terracotta);
+  box-shadow: 0 0 10px var(--terracotta);
+  animation: pulse-synapse 1.6s infinite;
+}
+
+@keyframes pulse-synapse {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.4); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.8; }
+}
+
+.synapse-active-tag {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--terracotta);
+}
+
+.synapse-desc {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin-bottom: 20px;
+}
+
+.synapse-matrix-grid {
+  display: grid;
+  grid-template-columns: 1fr 30px 1fr;
+  align-items: stretch;
+  gap: 16px;
+}
+
+.synapse-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.synapse-col-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-heading);
+}
+
+.synapse-col-icon {
+  font-size: 1rem;
+}
+
+.synapse-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.synapse-node-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.synapse-node-link:hover {
+  transform: translateX(3px);
+  border-color: var(--warm-border);
+}
+
+.synapse-node-link--art:hover {
+  border-color: var(--terracotta);
+}
+
+.synapse-node-link--project:hover {
+  border-color: var(--sage-green);
+}
+
+.node-link-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.node-link-title {
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  line-height: 1.2;
+}
+
+.node-link-role {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.node-link-badge {
+  font-family: var(--font-ui);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* Center Neural Laser Divider */
+.synapse-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.synapse-divider::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: var(--border-subtle);
+}
+
+.synapse-laser-beam {
+  width: 4px;
+  height: 24px;
+  border-radius: 2px;
+  background-color: var(--terracotta);
+  box-shadow: 0 0 10px var(--terracotta);
+  animation: laser-travel 2.2s infinite ease-in-out;
+}
+
+@keyframes laser-travel {
+  0% { transform: translateY(-40px); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateY(40px); opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .synapse-matrix-grid {
+    grid-template-columns: 1fr;
+  }
+  .synapse-divider {
+    display: none;
+  }
+}
+

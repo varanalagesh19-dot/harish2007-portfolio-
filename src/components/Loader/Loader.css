@@ -1,0 +1,96 @@
+.atelier-loader {
+  position: fixed;
+  inset: 0;
+  background: #EDE5D8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+}
+
+.atelier-loader__canvas-grain {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(245, 240, 231, 0.8) 0%, rgba(237, 229, 216, 0.95) 100%);
+  pointer-events: none;
+}
+
+.atelier-loader__inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  text-align: center;
+}
+
+.atelier-loader__emblem {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.atelier-loader__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px dashed #A65F43;
+  opacity: 0.7;
+}
+
+.atelier-loader__monogram {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 600;
+  color: #414B38;
+  line-height: 1;
+}
+
+.atelier-loader__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.atelier-loader__studio-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  color: #68745B;
+  text-transform: uppercase;
+}
+
+.atelier-loader__name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: #34352F;
+  letter-spacing: 0.02em;
+}
+
+.atelier-loader__subtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  color: #777267;
+  font-style: italic;
+}
+
+.atelier-loader__progress-track {
+  width: 140px;
+  height: 2px;
+  background: rgba(104, 116, 91, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.atelier-loader__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #68745B, #A65F43);
+  transform-origin: left;
+  width: 100%;
+}

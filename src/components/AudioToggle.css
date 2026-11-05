@@ -1,0 +1,92 @@
+.audio-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--warm-border);
+  border-radius: 20px;
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.audio-toggle:hover {
+  border-color: var(--sage-green);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.audio-toggle--active {
+  background-color: var(--bg-secondary);
+  border-color: var(--sage-green);
+  color: var(--sage-green);
+  box-shadow: 0 2px 10px rgba(104, 116, 91, 0.18);
+}
+
+.audio-toggle__eq {
+  display: flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  width: 14px;
+  height: 12px;
+}
+
+.eq-bar {
+  width: 2px;
+  background-color: currentColor;
+  border-radius: 1px;
+  transition: height 0.2s ease;
+}
+
+/* Muted State: Static tiny baseline bars with strike */
+.audio-toggle--muted .eq-bar-1 { height: 2px; }
+.audio-toggle--muted .eq-bar-2 { height: 2px; }
+.audio-toggle--muted .eq-bar-3 { height: 2px; }
+.audio-toggle--muted .eq-bar-4 { height: 2px; }
+
+/* Active Equalizer Animation */
+.audio-toggle--active .eq-bar-1 {
+  animation: eqPulse1 0.75s ease-in-out infinite alternate;
+}
+.audio-toggle--active .eq-bar-2 {
+  animation: eqPulse2 0.6s ease-in-out infinite alternate;
+}
+.audio-toggle--active .eq-bar-3 {
+  animation: eqPulse3 0.85s ease-in-out infinite alternate;
+}
+.audio-toggle--active .eq-bar-4 {
+  animation: eqPulse4 0.55s ease-in-out infinite alternate;
+}
+
+@keyframes eqPulse1 {
+  0% { height: 3px; }
+  100% { height: 11px; }
+}
+@keyframes eqPulse2 {
+  0% { height: 9px; }
+  100% { height: 3px; }
+}
+@keyframes eqPulse3 {
+  0% { height: 4px; }
+  100% { height: 12px; }
+}
+@keyframes eqPulse4 {
+  0% { height: 11px; }
+  100% { height: 4px; }
+}
+
+@media (max-width: 768px) {
+  .audio-toggle__label {
+    display: none;
+  }
+  .audio-toggle {
+    padding: 7px 9px;
+  }
+}
+

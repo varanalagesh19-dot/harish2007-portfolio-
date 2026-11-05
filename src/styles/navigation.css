@@ -1,0 +1,292 @@
+.atelier-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 18px 0;
+  background: var(--nav-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: padding 0.35s var(--ease-atelier), background-color 0.4s, border-color 0.4s;
+}
+
+.atelier-header--scrolled {
+  padding: 12px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border-bottom-color: var(--warm-border);
+}
+
+.atelier-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 var(--container-pad);
+}
+
+/* Brand */
+.atelier-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.atelier-brand__mark {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--deep-olive);
+  background: var(--sage-green-soft);
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  border: 1px solid var(--warm-border);
+  transition: all 0.3s;
+}
+
+.atelier-brand:hover .atelier-brand__mark {
+  background: var(--sage-green);
+  color: #FAF6F0;
+  border-color: var(--sage-green);
+}
+
+.atelier-brand__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.atelier-brand__title {
+  font-family: var(--font-display);
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+.atelier-brand__sub {
+  font-family: var(--font-script);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--terracotta);
+  line-height: 1;
+}
+
+/* Desktop Nav */
+.atelier-desktop-nav {
+  display: flex;
+  align-items: center;
+}
+
+.atelier-nav-list {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+
+.atelier-nav-item {
+  position: relative;
+}
+
+.atelier-nav-link {
+  display: inline-flex;
+  flex-direction: column;
+  position: relative;
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  padding: 6px 0;
+  transition: color 0.25s;
+  text-decoration: none;
+}
+
+.atelier-nav-link:hover {
+  color: var(--terracotta);
+}
+
+.atelier-nav-link--active {
+  color: var(--text-heading);
+  font-weight: 700;
+}
+
+.atelier-nav-link--special {
+  color: var(--terracotta);
+  font-weight: 700;
+}
+
+.atelier-nav-link--special:hover {
+  color: #B86B42;
+}
+
+.atelier-nav-link__bar {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--sage-green);
+  border-radius: 2px;
+}
+
+/* Right Actions */
+.atelier-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Feature 1: Atelier Focus Mode (Zen Reading) Toggle */
+.focus-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.focus-toggle-btn:hover {
+  border-color: var(--accent-terracotta, #8C472B);
+  color: var(--accent-terracotta, #8C472B);
+}
+
+.focus-toggle-btn--active {
+  background-color: var(--accent-terracotta, #8C472B);
+  color: #FFFFFF !important;
+  border-color: var(--accent-terracotta, #8C472B);
+}
+
+.focus-toggle-icon {
+  font-size: 0.85rem;
+}
+
+@media (max-width: 960px) {
+  .focus-toggle-label {
+    display: none;
+  }
+  .focus-toggle-btn {
+    padding: 6px 9px;
+  }
+}
+
+.atelier-header__cta {
+  padding: 9px 20px;
+  font-size: 0.7rem;
+}
+
+/* Burger */
+.atelier-burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 6px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.atelier-burger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--deep-olive);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+.atelier-burger--active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.atelier-burger--active span:nth-child(2) {
+  opacity: 0;
+}
+.atelier-burger--active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Mobile Drawer */
+.atelier-mobile-drawer {
+  overflow: hidden;
+  background: var(--bg-primary);
+  border-top: 1px solid var(--warm-border);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.12);
+}
+
+.atelier-mobile-drawer__links {
+  display: flex;
+  flex-direction: column;
+  padding: 24px var(--container-pad) 32px;
+}
+
+.atelier-mobile-link {
+  display: flex;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: padding-left 0.25s, color 0.25s;
+}
+
+.atelier-mobile-link:hover {
+  color: var(--terracotta);
+  padding-left: 8px;
+}
+
+.atelier-mobile-link--active {
+  color: var(--deep-olive);
+  font-weight: 600;
+}
+
+.atelier-mobile-link__num {
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--sage-green);
+  width: 36px;
+}
+
+.atelier-mobile-link__label {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  flex: 1;
+}
+
+.atelier-mobile-link__arrow {
+  color: var(--terracotta);
+  font-size: 1.2rem;
+}
+
+.atelier-mobile-drawer__footer {
+  margin-top: 24px;
+}
+
+@media (max-width: 980px) {
+  .atelier-desktop-nav,
+  .atelier-header__cta {
+    display: none;
+  }
+  .atelier-burger {
+    display: flex;
+  }
+}
+

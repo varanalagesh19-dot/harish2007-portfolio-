@@ -1,0 +1,113 @@
+/* ===================================================
+   ATELIER IMAGINATION — ADVANCED DUAL THEME ENGINE
+   Light Mode (Warm Ivory & Sage) & Dark Mode (Forest Charcoal & Olive)
+   100% Legible, High-Contrast, Persisted in localStorage
+   =================================================== */
+
+:root, [data-theme="light"] {
+  --bg-primary:        #EDE5D8; /* Warm Ivory Background */
+  --bg-secondary:      #F5F0E7; /* Soft Beige Surfaces */
+  --bg-card:           rgba(245, 240, 231, 0.96); /* Solid Frosted Studio Stone */
+  --bg-card-hover:     #EDE6D8;
+  --bg-matting:        #F5F0E7; /* Clean Artwork Matting */
+
+  /* High-Contrast Charcoal Typography */
+  --text-heading:      #0A0B09; /* Pitch Obsidian Black Headings — 100% Opacity */
+  --text-primary:      #34352F; /* Charcoal Text */
+  --text-secondary:    #282A24; /* Deep Espresso Slate */
+  --text-muted:        #4A4D44; /* Dark Legible Muted Ink */
+
+  /* Sage Green Accents & Muted Copper Highlights */
+  --accent-sage:       #68745B; /* Sage Green Accents */
+  --sage-green:        #68745B;
+  --sage-green-hover:  #546049;
+  --sage-green-soft:   rgba(104, 116, 91, 0.14);
+
+  --deep-olive:        #0A0B09;
+  --deep-olive-soft:   rgba(10, 11, 9, 0.08);
+
+  --accent-terracotta: #A65F43; /* Muted Copper Highlights */
+  --terracotta:        #A65F43;
+  --terracotta-hover:  #8E4D34;
+  --terracotta-soft:   rgba(166, 95, 67, 0.14);
+  --muted-copper:      #A65F43;
+  --warm-beige:        #B5A487;
+
+  --hairline:          rgba(52, 53, 47, 0.16);
+  --warm-border:       rgba(10, 11, 9, 0.18);
+  --border-subtle:     rgba(10, 11, 9, 0.10);
+  --nav-bg:            rgba(237, 229, 216, 0.96);
+  --card-shadow:       0 8px 24px rgba(10, 11, 9, 0.08);
+  --card-shadow-hover: 0 16px 42px rgba(10, 11, 9, 0.16);
+}
+
+[data-theme="dark"] {
+  --bg-primary:        #171C18; /* Deep Forest Charcoal Background */
+  --bg-secondary:      #222922; /* Dark Olive Surfaces */
+  --bg-card:           rgba(34, 41, 34, 0.96); /* Dark Olive Frosted Stone */
+  --bg-card-hover:     #2B352B;
+  --bg-matting:        #222922; /* Dark Frame Matting */
+
+  /* High-Luminance Warm Ivory Text */
+  --text-heading:      #FFFFFF; /* Pure Crisp White */
+  --text-primary:      #F1EBDD; /* Warm Ivory Text — 100% Opacity */
+  --text-secondary:    #D8D2C5; /* Bright Warm Stone */
+  --text-muted:        #A49F93; /* Warm Crisp Muted */
+
+  /* Sage Green & Muted Copper / Amber Accents */
+  --accent-sage:       #A8BA92; /* Bright Leaf Sage */
+  --sage-green:        #A8BA92;
+  --sage-green-hover:  #BBD0A3;
+  --sage-green-soft:   rgba(168, 186, 146, 0.2);
+
+  --deep-olive:        #FFFFFF; /* Crisp White Headings */
+  --deep-olive-soft:   rgba(255, 255, 255, 0.12);
+
+  --accent-terracotta: #D98A66; /* Warm Terracotta / Muted Copper */
+  --terracotta:        #D98A66;
+  --terracotta-hover:  #E59E7C;
+  --terracotta-soft:   rgba(217, 138, 102, 0.22);
+  --muted-copper:      #D98A66;
+  --warm-beige:        #626E5D;
+
+  --hairline:          rgba(241, 235, 221, 0.14);
+  --warm-border:       rgba(241, 235, 221, 0.2);
+  --border-subtle:     rgba(241, 235, 221, 0.12);
+  --nav-bg:            rgba(23, 28, 24, 0.96);
+  --card-shadow:       0 10px 30px rgba(0, 0, 0, 0.55);
+  --card-shadow-hover: 0 18px 46px rgba(0, 0, 0, 0.7);
+}
+
+/* ===================================================
+   FEATURE 1: ATELIER FOCUS MODE (ZEN EDITORIAL READING)
+   Solid velvet backdrop, zero 3D distraction, 100% publication-grade clarity
+   =================================================== */
+body.focus-mode-active {
+  --bg-primary: #F7F3EB;
+  --bg-secondary: #EFE9DE;
+  --bg-card: rgba(247, 243, 235, 0.98);
+  --bg-matting: #FFFDF9;
+}
+
+[data-theme="dark"] body.focus-mode-active,
+body.focus-mode-active[data-theme="dark"],
+html[data-theme="dark"] body.focus-mode-active {
+  --bg-primary: #0F1210;
+  --bg-secondary: #161A17;
+  --bg-card: rgba(22, 26, 23, 0.98);
+  --bg-matting: #131714;
+}
+
+body.focus-mode-active .ambient-3d-bg {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+body.focus-mode-active .project-card,
+body.focus-mode-active .art-card,
+body.focus-mode-active .skill-category-card,
+body.focus-mode-active .contact-card,
+body.focus-mode-active .form-card {
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+}

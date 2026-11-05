@@ -1,0 +1,16 @@
+.app {
+  min-height: 100vh;
+  position: relative;
+  background-color: var(--bg-primary);
+}
+
+main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+section {
+  position: relative;
+  width: 100%;
+}

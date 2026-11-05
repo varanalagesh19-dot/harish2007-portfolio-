@@ -1,0 +1,46 @@
+/* Kinetic Mouse-Follower Glassmorphic Spotlight Shader */
+
+.kinetic-spotlight-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50vw) var(--mouse-y, 50vh),
+    rgba(168, 186, 146, 0.12),
+    transparent 70%
+  );
+  transition: opacity 0.4s ease;
+  mix-blend-mode: screen;
+}
+
+[data-theme="light"] .kinetic-spotlight-overlay {
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50vw) var(--mouse-y, 50vh),
+    rgba(140, 71, 43, 0.09),
+    transparent 70%
+  );
+  mix-blend-mode: multiply;
+}
+
+/* Glassmorphic card surface highlight illumination */
+.project-card::after,
+.art-card .museum-frame::after,
+.skill-category-card::after,
+.vitals-card::after,
+.contact-card::after,
+.form-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    400px circle at calc(var(--mouse-x, 50vw) - var(--card-left, 0px)) calc(var(--mouse-y, 50vh) - var(--card-top, 0px)),
+    rgba(255, 255, 255, 0.06),
+    transparent 65%
+  );
+  pointer-events: none;
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+

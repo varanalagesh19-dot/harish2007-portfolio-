@@ -1,0 +1,123 @@
+/* ===================================================
+   CINEMATIC AMBIENT PORTAL LIGHT OVERLAY
+   Soft, atmospheric golden lens bloom with gentle vignette.
+   Zero opaque white wash: destination page and 3D scene remain visible.
+   =================================================== */
+
+.portal-light-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+  user-select: none;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 248, 230, 0.45) 0%,
+    rgba(235, 185, 130, 0.28) 45%,
+    rgba(180, 110, 60, 0.12) 75%,
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+  transition: opacity 0.4s ease;
+}
+
+[data-theme="dark"] .portal-light-overlay {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 240, 210, 0.38) 0%,
+    rgba(215, 160, 105, 0.24) 45%,
+    rgba(140, 85, 45, 0.1) 75%,
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+}
+
+/* Luminous Volumetric Core */
+.portal-light-core {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 255, 240, 0.5) 0%,
+    rgba(255, 235, 190, 0.25) 30%,
+    transparent 65%
+  );
+  animation: portal-pulse 2.5s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes portal-pulse {
+  0% {
+    transform: scale(0.96);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+
+/* Gentle Anamorphic Optical Bloom */
+.portal-light-bloom {
+  position: absolute;
+  width: 140vw;
+  height: 35vh;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(255, 245, 220, 0.45) 0%,
+    rgba(225, 145, 95, 0.18) 40%,
+    transparent 70%
+  );
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+/* Soft Golden Peripheral Vignette */
+.portal-light-aperture {
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 80px rgba(180, 110, 65, 0.15);
+  pointer-events: none;
+}
+
+/* Ethereal Floating Dust Motes */
+.portal-motes-field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.mote {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 8px rgba(255, 235, 190, 0.65);
+  animation: mote-float 3.5s ease-in-out infinite alternate;
+}
+
+.mote-1 { width: 4px; height: 4px; top: 38%; left: 46%; animation-duration: 3s; }
+.mote-2 { width: 5px; height: 5px; top: 48%; left: 52%; animation-duration: 3.8s; animation-delay: 0.3s; }
+.mote-3 { width: 3px; height: 3px; top: 44%; left: 40%; animation-duration: 3.4s; animation-delay: 0.6s; }
+.mote-4 { width: 4px; height: 4px; top: 56%; left: 48%; animation-duration: 4.1s; animation-delay: 0.9s; }
+.mote-5 { width: 6px; height: 6px; top: 32%; left: 54%; animation-duration: 3.2s; animation-delay: 0.4s; }
+.mote-6 { width: 3px; height: 3px; top: 60%; left: 43%; animation-duration: 4.4s; animation-delay: 1.2s; }
+.mote-7 { width: 4px; height: 4px; top: 50%; left: 60%; animation-duration: 3.6s; animation-delay: 0.7s; }
+.mote-8 { width: 5px; height: 5px; top: 40%; left: 50%; animation-duration: 3.9s; animation-delay: 0.2s; }
+
+@keyframes mote-float {
+  0% {
+    transform: translate(0, 0) scale(0.85);
+    opacity: 0.4;
+  }
+  100% {
+    transform: translate(10px, -18px) scale(1.15);
+    opacity: 0.9;
+  }
+}

@@ -1,0 +1,231 @@
+.atelier-footer {
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--warm-border);
+  padding: 80px 0 40px;
+  position: relative;
+  z-index: 10;
+  transition: var(--transition-theme);
+}
+
+.atelier-footer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.atelier-footer__top {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr 1fr 1.3fr;
+  gap: 40px;
+}
+
+@media (max-width: 992px) {
+  .atelier-footer__top {
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+  }
+}
+
+@media (max-width: 600px) {
+  .atelier-footer__top {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+.atelier-footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.atelier-footer__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  margin-bottom: 8px;
+}
+
+.atelier-footer__mark {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--sage-green);
+  color: #FAF6F0;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+  border-radius: 4px;
+  box-shadow: 0 4px 14px rgba(104, 116, 91, 0.25);
+}
+
+.atelier-footer__name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.atelier-footer__role {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--sage-green);
+  margin: 2px 0 0 0;
+}
+
+.atelier-footer__quote {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--terracotta);
+  line-height: 1.4;
+  margin: 6px 0 0 0;
+}
+
+.atelier-footer__subquote {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+.atelier-footer__heading {
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-heading);
+  margin-bottom: 20px;
+  position: relative;
+  display: inline-block;
+}
+
+.atelier-footer__heading::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 20px;
+  height: 2px;
+  background-color: var(--terracotta);
+}
+
+.atelier-footer__links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.atelier-footer__links a {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  transition: color 0.25s ease, transform 0.25s ease;
+  display: inline-block;
+}
+
+.atelier-footer__links a:hover {
+  color: var(--sage-green);
+  transform: translateX(4px);
+}
+
+.atelier-footer__contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.atelier-footer__contact-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.contact-label {
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+}
+
+.contact-val {
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  word-break: break-all;
+  transition: color 0.2s ease;
+}
+
+.contact-val:hover {
+  color: var(--terracotta);
+}
+
+.contact-linkedin {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  color: var(--sage-green);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.atelier-footer__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-top: 30px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.atelier-footer__copy {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.atelier-footer__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  color: var(--sage-green);
+  background-color: var(--sage-green-soft);
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--warm-border);
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--sage-green);
+  box-shadow: 0 0 8px var(--sage-green);
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.75); }
+}
+

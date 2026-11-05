@@ -1,0 +1,305 @@
+@import './themes.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --font-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-body:    'Plus Jakarta Sans', 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+  --font-script:  'Caveat', cursive, serif;
+  --font-ui:      'Space Grotesk', 'Plus Jakarta Sans', system-ui, sans-serif;
+
+  --section-gap:  clamp(80px, 10vw, 140px);
+  --container-pad: clamp(20px, 5vw, 80px);
+
+  --ease-atelier: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --transition-theme: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  background-color: var(--bg-primary);
+  transition: var(--transition-theme);
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.65;
+  transition: var(--transition-theme);
+}
+
+/* Subtle canvas texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='3' result='noise'/%3E%3CfeDiffuseLighting in='noise' lighting-color='%23fff' surfaceScale='1'%3E%3CfeDistantLight azimuth='60' elevation='50'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paper)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.8;
+}
+
+/* Custom Natural Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--warm-beige);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sage-green);
+}
+
+/* Selection */
+::selection {
+  background: rgba(166, 95, 67, 0.25);
+  color: var(--text-primary);
+}
+
+/* ===================================================
+   LAW 2: STUDIO-GRADE MUSEUM PASSEPARTOUT & AUTO-CROP
+   =================================================== */
+.museum-frame {
+  position: relative;
+  background-color: var(--bg-matting);
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--warm-border);
+  box-shadow: 0 12px 32px var(--card-shadow), inset 0 0 20px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  transition: transform 0.4s var(--ease-atelier), box-shadow 0.4s var(--ease-atelier), border-color 0.4s ease;
+}
+
+.museum-frame:hover {
+  border-color: var(--sage-green);
+  box-shadow: 0 18px 48px var(--card-shadow-hover), inset 0 0 20px rgba(0, 0, 0, 0.16);
+}
+
+.museum-matte {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 3px;
+  background-color: var(--bg-card);
+  box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.museum-matte--portrait {
+  aspect-ratio: 4 / 5;
+}
+
+.museum-matte--landscape {
+  aspect-ratio: 16 / 10;
+}
+
+.museum-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  transform: scale(1.02) rotate(0deg); /* Subtle auto-crop edge refinement, strictly upright */
+  filter: contrast(1.05) brightness(1.02);
+  transition: transform 0.6s var(--ease-atelier), filter 0.4s ease;
+  display: block;
+}
+
+.museum-frame:hover .museum-img {
+  transform: scale(1.04) rotate(0deg);
+}
+
+/* Base Typography with Maximum-Contrast Readability Shield */
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+  font-weight: 700; /* Bold Editorial Serif */
+  line-height: 1.15;
+  color: var(--text-heading);
+  letter-spacing: -0.015em;
+  opacity: 1;
+  transition: color 0.3s ease;
+}
+
+p, li, span, input, textarea, select {
+  font-weight: 500; /* Crisp non-transparent body copy */
+  opacity: 1;
+}
+
+p {
+  color: var(--text-primary);
+  line-height: 1.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  font-family: var(--font-body);
+  font-weight: 600;
+  opacity: 1;
+}
+
+/* Utility System */
+.container {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 var(--container-pad);
+  position: relative;
+  z-index: 10;
+}
+
+/* Eyebrow Label */
+.atelier-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sage-green);
+  margin-bottom: 16px;
+  opacity: 1;
+}
+.atelier-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 2px;
+  background: var(--terracotta);
+}
+
+/* Main Section Heading */
+.atelier-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.3rem, 4.4vw, 3.8rem);
+  font-weight: 700;
+  color: var(--text-heading);
+  line-height: 1.12;
+  margin-bottom: 20px;
+  opacity: 1;
+}
+.atelier-title em {
+  font-style: italic;
+  color: var(--terracotta);
+  font-weight: 400;
+}
+
+/* Script Signature */
+.atelier-script {
+  font-family: var(--font-script);
+  font-size: 1.45rem;
+  color: var(--terracotta);
+  line-height: 1;
+}
+
+/* Sage Green Primary Button */
+.btn-sage {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-ui);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 13px 28px;
+  background: var(--sage-green);
+  color: #FAF6F0;
+  border-radius: 3px;
+  box-shadow: 0 4px 14px rgba(104, 116, 91, 0.22);
+  transition: all 0.3s var(--ease-atelier);
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-sage:hover {
+  background: var(--sage-green-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(65, 75, 56, 0.3);
+  color: #FAF6F0;
+}
+
+/* Terracotta Outline Button */
+.btn-terracotta-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-ui);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border: 1.5px solid var(--terracotta);
+  color: var(--terracotta);
+  background: transparent;
+  border-radius: 3px;
+  transition: all 0.3s var(--ease-atelier);
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-terracotta-outline:hover {
+  background: var(--terracotta-soft);
+  transform: translateY(-2px);
+}
+
+/* Secondary Ghost Button */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  border: 1px solid var(--warm-border);
+  color: var(--text-primary);
+  background: var(--bg-card);
+  border-radius: 3px;
+  transition: all 0.25s var(--ease-atelier);
+}
+.btn-ghost:hover {
+  border-color: var(--sage-green);
+  color: var(--sage-green);
+  transform: translateY(-2px);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
